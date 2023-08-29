@@ -1,2 +1,2 @@
 # go-pdftojpeg
-Pdf Sperator and Jpeg Converter Tool with GoLang
+Pdf Separator and Jpeg Converter Tool with GoLang
