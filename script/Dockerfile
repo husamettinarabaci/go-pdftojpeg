@@ -1,4 +1,4 @@
-FROM golang:1.20-bullseye as base
+FROM ubuntu:22.04
 
 RUN adduser \
   --disabled-password \
@@ -9,11 +9,10 @@ RUN adduser \
   --uid 65532 \
   pdftojpeg
 
-WORKDIR /app
-COPY . .
-RUN echo $(ls)
-RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o /main ./cmd/main.go
-COPY ./config/ /config
+RUN apt-get update && apt-get install -y libc6
+
+COPY ./build .
+RUN echo $(ls -la)
 EXPOSE 16080
 
 CMD ["./main"]
