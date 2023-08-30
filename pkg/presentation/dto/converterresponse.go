@@ -1,14 +1,12 @@
 package presentation
 
 import (
-	"fmt"
-
 	mo "github.com/husamettinarabaci/go-pdftojpeg/core/domain/model/object"
 	tjson "github.com/husamettinarabaci/go-pdftojpeg/tool/json"
 )
 
 type ConverterResponse struct {
-	Packs []string `json:"packs"`
+	Files [][]byte `json:"files"`
 }
 
 func (a ConverterResponse) ToJson() string {
@@ -19,9 +17,9 @@ func (e ConverterResponse) FromJson(i string) ConverterResponse {
 	return tjson.FromJson[ConverterResponse](i)
 }
 
-func NewConverterResponse(packs []string) ConverterResponse {
+func NewConverterResponse(files [][]byte) ConverterResponse {
 	return ConverterResponse{
-		Packs: packs,
+		Files: files,
 	}
 }
 
@@ -30,11 +28,5 @@ func (o ConverterResponse) IsEmpty() bool {
 }
 
 func FromResponseObject(response mo.Response) ConverterResponse {
-	var packs []string
-	for i := 0; i < len(response.Packs); i++ {
-		packs = append(packs, fmt.Sprintf("%d x %d", response.Counts[i], response.Packs[i]))
-	}
-	return NewConverterResponse(
-		packs,
-	)
+	return NewConverterResponse(response.Files)
 }

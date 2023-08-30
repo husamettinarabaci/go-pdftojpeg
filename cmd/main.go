@@ -12,11 +12,9 @@ import (
 )
 
 var restConfig tconfig.RestConfig
-var webConfig tconfig.WebConfig
 
 func main() {
 	restConfig.ReadConfig()
-	webConfig.ReadConfig()
 	var err error
 	cont := container.New()
 
@@ -61,8 +59,8 @@ func main() {
 	}
 
 	//Application PdfToJpeg Converter Adapter
-	err = cont.Singleton(func(s as.Service) pa.ConverterAdapter {
-		return pa.NewConverterAdapter(s)
+	err = cont.Singleton(func(s as.Service) pa.CommandAdapter {
+		return pa.NewCommandAdapter(s)
 	})
 	if err != nil {
 		panic(err)
@@ -74,11 +72,11 @@ func main() {
 		panic(err)
 	}
 
-	var converterHandler pa.ConverterAdapter
-	err = cont.Resolve(&converterHandler)
+	var commandHandler pa.CommandAdapter
+	err = cont.Resolve(&commandHandler)
 	if err != nil {
 		panic(err)
 	}
 
-	cr.NewRestAPI(queryHandler, converterHandler).Serve(restConfig.Debug, restConfig.Restapi.Port)
+	cr.NewRestAPI(queryHandler, commandHandler).Serve(restConfig.Debug, restConfig.Restapi.Port)
 }

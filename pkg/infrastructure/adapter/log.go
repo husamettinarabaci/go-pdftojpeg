@@ -2,7 +2,6 @@ package infrastructure
 
 import (
 	"context"
-	"fmt"
 
 	mi "github.com/husamettinarabaci/go-pdftojpeg/core/domain/model/interface"
 	tconfig "github.com/husamettinarabaci/go-pdftojpeg/tool/config"
@@ -18,6 +17,6 @@ func NewLogAdapter() LogAdapter {
 
 func (a LogAdapter) Log(ctx context.Context, source string, logData mi.Loggable) {
 	if tconfig.GetLogConfigInstance().Logger.Console {
-		fmt.Println(source, " : ", logData.ToJson())
+
 	}
 }

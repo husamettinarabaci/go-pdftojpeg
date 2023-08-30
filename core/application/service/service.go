@@ -32,11 +32,11 @@ func (a Service) Convert(ctx context.Context, converterRequest me.ConverterReque
 	a.Log(ctx, operationName, converterRequest)
 	if err := a.domainService.IsConverterRequestEntityValid(converterRequest); err != nil {
 		return me.ConverterResponse{
-			Id: converterRequest.Id,
+			Id: converterRequest.Converter.Item,
 		}, err
 	}
 	response, err := a.converter.Convert(ctx, converterRequest)
-	converterResponse := me.NewConverterResponse(converterRequest.Id, response)
+	converterResponse := me.NewConverterResponse(converterRequest.Converter.Item, response)
 	a.Log(ctx, operationName, converterResponse)
 	return converterResponse, err
 }

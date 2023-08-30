@@ -5,8 +5,7 @@ import (
 )
 
 type Converter struct {
-	Item      int   `json:"item"`
-	PackSizes []int `json:"pack_sizes"`
+	Item string `json:"item"`
 }
 
 func (o Converter) ToJson() string {
@@ -17,10 +16,9 @@ func (a Converter) FromJson(i string) Converter {
 	return tjson.FromJson[Converter](i)
 }
 
-func NewConverter(item int, packSizes []int) Converter {
+func NewConverter(item string) Converter {
 	return Converter{
-		Item:      item,
-		PackSizes: packSizes,
+		Item: item,
 	}
 }
 
@@ -40,21 +38,8 @@ func (o Converter) IsValid() error {
 	if o.IsEmpty() {
 		return ErrInvalidInput
 	}
-	if o.Item <= 0 {
+	if o.Item == "" {
 		return ErrInvalidInput
-	}
-	if o.PackSizes == nil {
-		return ErrInvalidInput
-	}
-	if len(o.PackSizes) == 0 {
-		return ErrInvalidInput
-	}
-	for _, v := range o.PackSizes {
-		if v <= 0 {
-			return ErrInvalidInput
-		}
 	}
 	return nil
 }
-
-var DefaultPackSizes = []int{250, 500, 1000, 2000, 5000}

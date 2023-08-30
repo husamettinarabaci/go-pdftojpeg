@@ -57,34 +57,14 @@ go test -v ./...
 ```
 
 ## Usage
-You can access the Web Site with the below URL.
-```bash
-http://localhost:16000
-```
-
-or
-
-You can use with default package sizes. 
-Default package sizes are 250, 500, 1000, 2000, 5000.
+You can use with;\
+ - RestAPI\
 ```bash
 POST http://localhost:16080/api/converter HTTP/1.1
 content-type: application/json
 
 {
     "item": 250
-}
-```
-
-or
-
-You can use with custom package sizes. 
-```bash
-POST http://localhost:16080/api/converter HTTP/1.1
-content-type: application/json
-
-{
-    "item": 250
-    "pack_sizes": [40, 50, 60, 70]
 }
 ```
 
@@ -98,7 +78,7 @@ export LOCAL=true && go run cmd/main.go
 docker build -t {DOCKER_USERNAME}/{YOUR_REPO} -f script/Dockerfile .
 docker tag {DOCKER_USERNAME}/{YOUR_REPO} {DOCKER_USERNAME}/{YOUR_REPO}:latest
 docker push {DOCKER_USERNAME}/{YOUR_REPO}:latest
-docker run -p 16080:16080 -p 16000:16000 {DOCKER_USERNAME}/{YOUR_REPO}:latest
+docker run -p 16080:16080 {DOCKER_USERNAME}/{YOUR_REPO}:latest
 ```
 
 ## Kubernetes Deploy

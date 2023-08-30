@@ -1,13 +1,12 @@
 package domain
 
 import (
-	"github.com/google/uuid"
 	mo "github.com/husamettinarabaci/go-pdftojpeg/core/domain/model/object"
 	tjson "github.com/husamettinarabaci/go-pdftojpeg/tool/json"
 )
 
 type ConverterResponse struct {
-	Id       uuid.UUID   `json:"id"`
+	Id       string      `json:"id"`
 	Response mo.Response `json:"response"`
 }
 
@@ -19,7 +18,7 @@ func (a ConverterResponse) FromJson(i string) ConverterResponse {
 	return tjson.FromJson[ConverterResponse](i)
 }
 
-func NewConverterResponse(id uuid.UUID, response mo.Response) ConverterResponse {
+func NewConverterResponse(id string, response mo.Response) ConverterResponse {
 	return ConverterResponse{
 		Id:       id,
 		Response: response,
@@ -42,7 +41,7 @@ func (o ConverterResponse) IsValid() error {
 	if o.IsEmpty() {
 		return mo.ErrInvalidInput
 	}
-	if o.Id == uuid.Nil {
+	if o.Id == "" {
 		return mo.ErrInvalidInput
 	}
 	if o.Response.IsEmpty() {

@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/golobby/container/v3 v3.3.2
 	github.com/google/uuid v1.3.0
+	github.com/husamettinarabaci/go-fitz v0.0.0-20210702102225-a530a79566e9
 	gopkg.in/yaml.v2 v2.4.0
 )
 

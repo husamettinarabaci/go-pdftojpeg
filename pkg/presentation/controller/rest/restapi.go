@@ -2,10 +2,11 @@ package presentation
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	pp "github.com/husamettinarabaci/go-pdftojpeg/core/application/presentation/port"
-	mo "github.com/husamettinarabaci/go-pdftojpeg/core/domain/model/object"
 	dto "github.com/husamettinarabaci/go-pdftojpeg/pkg/presentation/dto"
 )
 
@@ -33,21 +34,16 @@ func (api *RestAPI) Serve(debug bool, port string) {
 }
 
 func (api *RestAPI) Convert(c *gin.Context) {
+	file, _ := c.FormFile("file")
+	uid := uuid.New()
+	c.SaveUploadedFile(file, "./tmp/"+uid.String()+".pdf")
 	var converterRequestDto dto.ConverterRequest
-	if err := c.ShouldBindJSON(&converterRequestDto); err != nil {
+	converterRequestDto.Item = uid.String()
+	converterResponse, err := api.commandHandler.Convert(c, converterRequestDto.ToConverterRequestEntity())
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	converterRequestDto.FillPackSizes()
-	if err := converterRequestDto.IsValid(); err == nil {
-		converterResponse, err := api.commandHandler.Convert(c, converterRequestDto.ToConverterRequestEntity())
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, dto.FromResponseObject(converterResponse.Response))
-	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": mo.ErrInvalidInput.Error()})
-	}
+	os.Remove("./tmp/" + uid.String() + ".pdf")
+	c.JSON(http.StatusOK, dto.FromResponseObject(converterResponse.Response))
 }
